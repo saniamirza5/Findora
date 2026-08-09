@@ -1,0 +1,201 @@
+.navbar {
+  height: 76px;
+
+  padding: 0 6%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  background: #fffaf7;
+
+  border-bottom: 2px solid #2f2540;
+
+  position: relative;
+  z-index: 100;
+}
+
+/* LOGO */
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  color: #2f2540;
+
+  font-family: "Fredoka", sans-serif;
+  font-size: 27px;
+  font-weight: 700;
+
+  letter-spacing: -1px;
+}
+
+.navbar-logo span {
+  color: #c765a8;
+
+  font-size: 22px;
+
+  transform: rotate(10deg);
+}
+
+/* LINKS */
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+
+  gap: 28px;
+}
+
+.navbar-links a {
+  position: relative;
+
+  color: #51465f;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  transition: color 0.2s ease;
+}
+
+.navbar-links a:hover {
+  color: #b34d91;
+}
+
+.navbar-links a.active {
+  color: #b34d91;
+}
+
+.navbar-links a.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: -7px;
+
+  height: 2px;
+
+  background: #c765a8;
+
+  transform: rotate(-2deg);
+}
+
+/* ACTIONS */
+
+.navbar-actions {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+}
+
+.navbar-login {
+  padding: 9px 13px;
+
+  color: #51465f;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.navbar-login:hover {
+  color: #b34d91;
+}
+
+.navbar-signup {
+  padding: 10px 15px;
+
+  background: #c9f58f;
+
+  color: #2f2540;
+
+  border: 2px solid #2f2540;
+  border-radius: 10px;
+
+  font-size: 11px;
+  font-weight: 800;
+
+  box-shadow: 3px 3px 0 #2f2540;
+
+  transition: 0.15s ease;
+}
+
+.navbar-signup:hover {
+  transform: translate(2px, 2px);
+
+  box-shadow: 1px 1px 0 #2f2540;
+}
+
+/* MOBILE */
+
+@media (max-width: 950px) {
+  .navbar-links {
+    gap: 16px;
+  }
+
+  .navbar-signup {
+    display: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .navbar {
+    height: auto;
+
+    min-height: 70px;
+
+    padding: 12px 5%;
+
+    flex-wrap: wrap;
+
+    gap: 12px;
+  }
+
+  .navbar-links {
+    order: 3;
+
+    width: 100%;
+
+    padding-top: 8px;
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 18px;
+
+    overflow-x: auto;
+  }
+
+  .navbar-links a {
+    white-space: nowrap;
+  }
+
+  .navbar-actions {
+    margin-left: auto;
+  }
+
+  .navbar-login {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 450px) {
+  .navbar-logo {
+    font-size: 24px;
+  }
+
+  .navbar-links {
+    justify-content: flex-start;
+
+    padding-bottom: 3px;
+  }
+
+  .navbar-links a {
+    font-size: 11px;
+  }
+}

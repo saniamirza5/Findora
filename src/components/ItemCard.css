@@ -1,0 +1,141 @@
+.item-card {
+  background: #fffaf7;
+
+  border: 2px solid #2f2540;
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  box-shadow: 6px 6px 0 #2f2540;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  position: relative;
+}
+
+.item-card:hover {
+  transform: translateY(-6px) rotate(-1deg);
+  box-shadow: 9px 9px 0 #2f2540;
+}
+
+/* IMAGE */
+
+.item-image {
+  height: 210px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+
+  background: #eaa6d2;
+}
+
+.item-card:nth-child(2) .item-image {
+  background: #c9f58f;
+}
+
+.item-card:nth-child(3) .item-image {
+  background: #f7d35d;
+}
+
+.item-card:nth-child(4) .item-image {
+  background: #b9a4d2;
+}
+
+.item-category {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+
+  padding: 6px 10px;
+
+  background: #fffaf7;
+
+  border: 2px solid #2f2540;
+  border-radius: 10px;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.item-image-placeholder {
+  font-size: 75px;
+
+  transform: rotate(-5deg);
+}
+
+/* CONTENT */
+
+.item-card-content {
+  padding: 20px;
+}
+
+.item-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.item-card h3 {
+  font-family: "Fredoka", sans-serif;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.status-badge {
+  flex-shrink: 0;
+
+  padding: 5px 9px;
+
+  border: 2px solid #2f2540;
+  border-radius: 8px;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.status-badge.lost {
+  background: #f5a9d8;
+}
+
+.status-badge.found {
+  background: #c9f58f;
+}
+
+.status-badge.returned {
+  background: #b9a4d2;
+}
+
+.item-location {
+  margin-top: 15px;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.item-date {
+  margin-top: 6px;
+
+  font-size: 12px;
+  color: #766b80;
+}
+
+.item-view-button {
+  display: inline-block;
+
+  margin-top: 18px;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  color: #b34d91;
+}
+
+.item-view-button:hover {
+  text-decoration: underline;
+}
