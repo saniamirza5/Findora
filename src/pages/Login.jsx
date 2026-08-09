@@ -1,87 +1,94 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import "./Login.css";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Login submitted:", {
-      email,
-      password,
-    });
+    setError("");
+    setLoading(true);
+
+    try {
+      await login(email, password);
+
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+
+      if (err.response?.status === 401) {
+        setError("Invalid email or password.");
+      } else {
+        setError("Unable to login. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <main className="auth-page">
-      <div className="auth-decoration auth-decoration-one">
-        ✦
-      </div>
+    <div className="auth-page">
+      <div className="auth-card">
 
-      <div className="auth-decoration auth-decoration-two">
-        ♡
-      </div>
+        <h1>Welcome back ✦</h1>
 
-      <section className="login-card">
-        <div className="login-header">
-          <span className="login-kicker">WELCOME BACK ✦</span>
+        <p>Login to your Findora account</p>
 
-          <h1>
-            Let's find
-            <br />
-            <span>your stuff.</span>
-          </h1>
-
-          <p>
-            Sign in to your Findora account and
-            get back to finding what matters.
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-
-            <input
-              id="email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+        {error && (
+          <div className="auth-error">
+            {error}
           </div>
+        )}
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
+        <form onSubmit={handleSubmit}>
 
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+          <label>Email</label>
 
-          <button type="submit" className="login-button">
-            Log in ✦
+          <input
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <label>Password</label>
+
+          <input
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
+
         </form>
 
-        <div className="login-footer">
-          <span>Don't have an account?</span>
-
+        <p className="auth-switch">
+          Don't have an account?{" "}
           <Link to="/register">
-            Create one →
+            Register
           </Link>
-        </div>
-      </section>
-    </main>
+        </p>
+
+      </div>
+    </div>
   );
 }
 

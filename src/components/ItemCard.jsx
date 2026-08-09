@@ -2,43 +2,61 @@ import { Link } from "react-router-dom";
 import "./ItemCard.css";
 
 function ItemCard({ item }) {
-  const statusClass = item.status.toLowerCase();
+  const formattedDate = item.dateReported
+    ? new Date(item.dateReported).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : "";
+
+  const statusClass = item.status
+    ? item.status.toLowerCase()
+    : "";
 
   return (
-    <article className={`item-card ${statusClass}`}>
-      <div className="item-image">
-        <span className="item-category">
-          {item.category}
-        </span>
+    <article className="item-card">
+      <Link
+        to={`/items/${item.id}`}
+        className="item-card-image"
+      >
+        {item.imageUrl ? (
+          <img
+            src={item.imageUrl}
+            alt={item.itemName}
+          />
+        ) : (
+          <div className="item-card-no-image">
+            <span>♡</span>
+            <small>No image</small>
+          </div>
+        )}
 
-        <span className="item-image-placeholder">
-          {item.icon}
+        <span className={`item-status ${statusClass}`}>
+          {item.status}
         </span>
-      </div>
+      </Link>
 
       <div className="item-card-content">
-        <div className="item-card-top">
-          <h3>{item.itemName}</h3>
-
-          <span className={`status-badge ${statusClass}`}>
-            {item.status}
-          </span>
-        </div>
-
-        <p className="item-location">
+        <p className="item-card-location">
           📍 {item.location}
         </p>
 
-        <p className="item-date">
-          {item.date}
+        <h3>{item.itemName}</h3>
+
+        <p className="item-card-description">
+          {item.description}
         </p>
 
-        <Link
-          to={`/items/${item.id}`}
-          className="item-view-button"
-        >
-          View item →
-        </Link>
+        <div className="item-card-footer">
+          <span>
+            {formattedDate}
+          </span>
+
+          <Link to={`/items/${item.id}`}>
+            View →
+          </Link>
+        </div>
       </div>
     </article>
   );

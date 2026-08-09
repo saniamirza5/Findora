@@ -1,119 +1,143 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import "./Register.css";
+import { useNavigate, Link } from "react-router-dom";
+import api from "../services/api";
 
 function Register() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    password: "",
+  });
+
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("Registration submitted:", {
-      name,
-      email,
-      phone,
-      password,
-    });
+    setError("");
+    setSuccess("");
+    setLoading(true);
+
+    try {
+      await api.post("/api/auth/register", formData);
+
+      setSuccess("Account created successfully!");
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (err) {
+      console.error(err);
+
+      if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError("Registration failed. Please try again.");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <main className="register-page">
-      <div className="register-decoration decoration-one">
-        ✦
-      </div>
+    <div className="auth-page">
+      <div className="auth-card">
 
-      <div className="register-decoration decoration-two">
-        ♡
-      </div>
+        <h1>Join Findora ✦</h1>
 
-      <section className="register-card">
-        <div className="register-header">
-          <span className="register-kicker">
-            JOIN FINDORA ✦
-          </span>
+        <p>Create your campus lost & found account</p>
 
-          <h1>
-            Make lost
-            <br />
-            <span>less lost.</span>
-          </h1>
-
-          <p>
-            Create your account and become part of
-            your campus lost & found community.
-          </p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="register-form">
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-
-            <input
-              id="name"
-              type="text"
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+        {error && (
+          <div className="auth-error">
+            {error}
           </div>
+        )}
 
-          <div className="form-group">
-            <label htmlFor="register-email">Email</label>
-
-            <input
-              id="register-email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+        {success && (
+          <div className="auth-success">
+            {success}
           </div>
+        )}
 
-          <div className="form-group">
-            <label htmlFor="phone">Phone</label>
+        <form onSubmit={handleSubmit}>
 
-            <input
-              id="phone"
-              type="tel"
-              placeholder="Your phone number"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              required
-            />
-          </div>
+          <label>Name</label>
 
-          <div className="form-group">
-            <label htmlFor="register-password">Password</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="Enter your name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
 
-            <input
-              id="register-password"
-              type="password"
-              placeholder="Create a password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+          <label>Email</label>
 
-          <button type="submit" className="register-button">
-            Create Account ✦
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Phone</label>
+
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Enter your phone number"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Password</label>
+
+          <input
+            type="password"
+            name="password"
+            placeholder="Create a password"
+            value={formData.password}
+            onChange={handleChange}
+            minLength={8}
+            required
+          />
+
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Creating account..." : "Create Account"}
           </button>
+
         </form>
 
-        <div className="register-footer">
-          <span>Already have an account?</span>
-
+        <p className="auth-switch">
+          Already have an account?{" "}
           <Link to="/login">
-            Log in →
+            Login
           </Link>
-        </div>
-      </section>
-    </main>
+        </p>
+
+      </div>
+    </div>
   );
 }
 

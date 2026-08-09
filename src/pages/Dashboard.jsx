@@ -1,145 +1,122 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import api from "../services/api";
 import ItemCard from "../components/ItemCard";
 import "./Dashboard.css";
 
-const mockItems = [
-  {
-    id: 1,
-    itemName: "Blue Backpack",
-    category: "BAG",
-    status: "LOST",
-    location: "Central Library",
-    date: "08 Aug 2026",
-    icon: "🎒",
-  },
-  {
-    id: 2,
-    itemName: "Black Wallet",
-    category: "WALLET",
-    status: "FOUND",
-    location: "College Canteen",
-    date: "07 Aug 2026",
-    icon: "👛",
-  },
-  {
-    id: 3,
-    itemName: "Wireless Earbuds",
-    category: "ELECTRONICS",
-    status: "LOST",
-    location: "Block A",
-    date: "06 Aug 2026",
-    icon: "🎧",
-  },
-  {
-    id: 4,
-    itemName: "Silver Keys",
-    category: "KEYS",
-    status: "FOUND",
-    location: "Main Gate",
-    date: "05 Aug 2026",
-    icon: "🔑",
-  },
-];
-
 function Dashboard() {
-  const [activeFilter, setActiveFilter] = useState("ALL");
-  const [search, setSearch] = useState("");
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const filteredItems = mockItems.filter((item) => {
-    const matchesFilter =
-      activeFilter === "ALL" ||
-      item.status === activeFilter;
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const response = await api.get("/api/items");
 
-    const searchText = search.toLowerCase();
+        setItems(response.data);
+      } catch (err) {
+        console.error(err);
 
-    const matchesSearch =
-      item.itemName.toLowerCase().includes(searchText) ||
-      item.location.toLowerCase().includes(searchText);
+        setError("Unable to load items.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    return matchesFilter && matchesSearch;
-  });
+    fetchItems();
+  }, []);
 
   return (
-    <main className="dashboard">
+    <main className="dashboard-page">
+
+      {/* HERO */}
+
       <section className="dashboard-hero">
-        <div className="dashboard-heading">
+        <div className="hero-content">
           <p className="dashboard-kicker">
             CAMPUS LOST & FOUND ✦
           </p>
 
           <h1>
-            What's missing?
+            Lost it?
             <br />
-            <span>Maybe it's here.</span>
+            <span>Find it.</span>
           </h1>
 
-          <p className="dashboard-description">
-            Search through items reported by your
-            campus community.
+          <p>
+            A little place on campus where lost things
+            find their way home.
           </p>
+
+          <Link
+            to="/report"
+            className="hero-report-button"
+          >
+            + Report an Item
+          </Link>
         </div>
 
-        <div className="dashboard-search">
-          <span>⌕</span>
-
-          <input
-            type="text"
-            placeholder="Search an item or location..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+        <div className="hero-decoration">
+          <span>✦</span>
+          <span>♡</span>
+          <span>✦</span>
         </div>
       </section>
 
-      <section className="items-section">
-        <div className="items-header">
+      {/* ITEMS */}
+
+      <section className="dashboard-items">
+
+        <div className="dashboard-section-header">
           <div>
             <p className="section-kicker">
-              RECENTLY REPORTED
+              WHAT'S OUT THERE
             </p>
 
-            <h2>Items around campus</h2>
+            <h2>Recent reports</h2>
           </div>
 
-          <div className="filter-buttons">
-            {["ALL", "LOST", "FOUND", "RETURNED"].map(
-              (filter) => (
-                <button
-                  key={filter}
-                  className={
-                    activeFilter === filter
-                      ? "filter-button active"
-                      : "filter-button"
-                  }
-                  onClick={() => setActiveFilter(filter)}
-                >
-                  {filter}
-                </button>
-              )
-            )}
-          </div>
+          <span className="item-count">
+            {items.length} items
+          </span>
         </div>
 
-        {filteredItems.length > 0 ? (
-          <div className="item-grid">
-            {filteredItems.map((item) => (
-              <ItemCard
-                key={item.id}
-                item={item}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="empty-results">
+        {loading && (
+          <div className="dashboard-state">
             <span>✦</span>
-
-            <h3>No items found</h3>
-
-            <p>
-              Try another search or filter.
-            </p>
+            <p>Finding things...</p>
           </div>
         )}
+
+        {!loading && error && (
+          <div className="dashboard-state error">
+            <span>!</span>
+            <p>{error}</p>
+          </div>
+        )}
+
+        {!loading && !error && items.length === 0 && (
+          <div className="dashboard-state">
+            <span>♡</span>
+            <p>No items have been reported yet.</p>
+
+            <Link to="/report">
+              Be the first to report one →
+            </Link>
+          </div>
+        )}
+
+        {!loading && !error && items.length > 0 && (
+          <div className="items-grid">
+            {items.map((item) => (
+              <div key={item.id}>
+                <ItemCard item={item} />
+              </div>
+            ))}
+          </div>
+        )}
+
       </section>
     </main>
   );
