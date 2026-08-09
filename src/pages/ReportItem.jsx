@@ -1,9 +1,12 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 import "./ReportItem.css";
 
 function ReportItem() {
   const [type, setType] = useState("LOST");
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   const [formData, setFormData] = useState({
     itemName: "",
@@ -26,21 +29,50 @@ function ReportItem() {
 
     if (!file) return;
 
+    setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
 
   const removeImage = () => {
     setImagePreview(null);
   };
-
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log({
-      type,
-      ...formData,
-      image: imagePreview,
-    });
+    try {
+      const data = new FormData();
+
+      data.append("itemName", formData.itemName);
+      data.append("description", formData.description);
+      data.append("location", formData.location);
+      data.append("dateReported", formData.date);
+      data.append("status", type);
+
+      if (imageFile) {
+        data.append("image", imageFile);
+      }
+
+      console.log("Submitting item...");
+
+      const response = await api.post("/api/items", data);
+
+      console.log("Item created:", response.data);
+
+      alert("Item reported successfully! ✦");
+
+      navigate("/dashboard");
+
+    } catch (error) {
+      console.error("Error reporting item:", error);
+
+      if (error.response) {
+        console.error("Backend response:", error.response.data);
+        console.error("Status:", error.response.status);
+      }
+
+      alert("Unable to report item. Please try again.");
+    }
   };
 
   return (

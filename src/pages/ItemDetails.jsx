@@ -1,39 +1,77 @@
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import api from "../services/api";
 import "./ItemDetails.css";
-
-const mockItem = {
-  id: 1,
-  itemName: "Blue Backpack",
-  category: "BAG",
-  status: "LOST",
-  location: "Central Library",
-  date: "08 Aug 2026",
-  description:
-    "A blue backpack was lost near the central library. It has a small keychain attached to the front pocket.",
-  reportedBy: "Sania",
-  icon: "🎒",
-};
 
 function ItemDetails() {
   const { id } = useParams();
 
-  console.log("Viewing item:", id);
+  const [item, setItem] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const fetchItem = async () => {
+      try {
+        const response = await api.get(`/api/items/${id}`);
+        setItem(response.data);
+      } catch (err) {
+        console.error("Error loading item:", err);
+        setError("Unable to load this item.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchItem();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <main className="item-details-page">
+        <p>Loading item...</p>
+      </main>
+    );
+  }
+
+  if (error || !item) {
+    return (
+      <main className="item-details-page">
+        <p>{error || "Item not found."}</p>
+
+        <Link to="/dashboard">
+          ← Back to items
+        </Link>
+      </main>
+    );
+  }
 
   return (
     <main className="item-details-page">
-      <Link to="/dashboard" className="back-link">
+
+      <Link to="/dashboard" className="back-to-items">
         ← Back to items
       </Link>
 
       <section className="item-details">
+
         <div className="details-image">
+
           <span className="details-category">
-            {mockItem.category}
+            {item.status}
           </span>
 
-          <span className="details-icon">
-            {mockItem.icon}
-          </span>
+          {item.imageUrl ? (
+            <img
+              src={item.imageUrl}
+              alt={item.itemName}
+              className="details-item-image"
+            />
+          ) : (
+            <span className="details-icon">
+              📦
+            </span>
+          )}
 
           <div className="image-decoration decoration-star">
             ✦
@@ -42,65 +80,94 @@ function ItemDetails() {
           <div className="image-decoration decoration-heart">
             ♡
           </div>
+
         </div>
 
         <div className="details-content">
+
           <div className="details-top">
+
             <span
-              className={`details-status ${mockItem.status.toLowerCase()}`}
+              className={`details-status ${item.status.toLowerCase()}`}
             >
-              {mockItem.status}
+              {item.status}
             </span>
 
             <span className="details-date">
-              {mockItem.date}
+              {item.dateReported}
             </span>
+
           </div>
 
-          <h1>{mockItem.itemName}</h1>
+          <h1>{item.itemName}</h1>
 
           <div className="details-location">
             <span>📍</span>
+
             <div>
-              <small>LAST SEEN</small>
-              <strong>{mockItem.location}</strong>
+              <small>
+                {item.status === "LOST"
+                  ? "LAST SEEN"
+                  : "FOUND AT"}
+              </small>
+
+              <strong>{item.location}</strong>
             </div>
           </div>
 
           <div className="details-description">
-            <p className="details-label">DESCRIPTION</p>
 
-            <p>{mockItem.description}</p>
+            <p className="details-label">
+              DESCRIPTION
+            </p>
+
+            <p>{item.description}</p>
+
           </div>
 
-          <div className="reported-by">
-            <div className="user-avatar">
-              {mockItem.reportedBy.charAt(0)}
-            </div>
+          {item.user && (
+            <div className="reported-by">
 
-            <div>
-              <small>REPORTED BY</small>
-              <strong>{mockItem.reportedBy}</strong>
+              <div className="user-avatar">
+                {item.user.name
+                  ? item.user.name.charAt(0).toUpperCase()
+                  : "U"}
+              </div>
+
+              <div>
+                <small>REPORTED BY</small>
+
+                <strong>
+                  {item.user.name || "User"}
+                </strong>
+              </div>
+
             </div>
-          </div>
+          )}
 
           <button className="contact-button">
             💬 Contact User
           </button>
+
         </div>
+
       </section>
 
       <section className="details-help">
+
         <span>✦</span>
 
         <div>
           <h3>Think this is yours?</h3>
+
           <p>
             Contact the person who reported it and
             arrange a safe way to reconnect.
           </p>
         </div>
+
       </section>
+
     </main>
   );
 }
