@@ -76,9 +76,12 @@ function Navbar() {
           </>
         ) : (
           <>
-            <span className="navbar-user">
+            <Link
+              to="/profile"
+              className="navbar-user"
+            >
               Hi, {user?.name || "there"}!
-            </span>
+            </Link>
 
             <button
               type="button"
