@@ -36,6 +36,33 @@ function MyItems() {
     fetchMyItems();
   }, [user]);
 
+  const handleDelete = async (itemId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this item?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      await api.delete(`/api/items/${itemId}`);
+
+      // Remove the deleted item from the current page
+      setMyItems((previousItems) =>
+        previousItems.filter((item) => item.id !== itemId)
+      );
+
+    } catch (err) {
+      console.error("Error deleting item:", err);
+
+      alert(
+        err.response?.data ||
+        "Unable to delete the item. Please try again."
+      );
+    }
+  };
+
   if (!isLoggedIn) {
     return (
       <main className="my-items-page">
@@ -125,6 +152,7 @@ function MyItems() {
                 <ItemCard item={item} />
 
                 <div className="item-actions">
+
                   <Link
                     to={`/items/${item.id}`}
                     className="edit-item"
@@ -132,12 +160,21 @@ function MyItems() {
                     View
                   </Link>
 
+                  <Link
+                    to={`/items/${item.id}/edit`}
+                    className="edit-item"
+                  >
+                    Edit
+                  </Link>
+
                   <button
                     className="delete-item"
                     type="button"
+                    onClick={() => handleDelete(item.id)}
                   >
                     Delete
                   </button>
+
                 </div>
               </div>
             ))}

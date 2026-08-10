@@ -1,14 +1,54 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 import "./ItemDetails.css";
 
 function ItemDetails() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
   const { id } = useParams();
 
   const [item, setItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const handleContactUser = async () => {
+    if (!item?.user?.id) {
+      alert("Unable to identify the item owner.");
+      return;
+    }
+
+    if (item.user.id === user?.userId) {
+      alert("You cannot contact yourself about your own item.");
+      return;
+    }
+
+    try {
+      const response = await api.post(
+        "/api/conversations",
+        null,
+        {
+          params: {
+            itemId: item.id,
+            otherUserId: item.user.id,
+          },
+        }
+      );
+
+      navigate(`/chat/${response.data.id}`);
+
+    } catch (err) {
+      console.error(
+        "Error creating conversation:",
+        err
+      );
+
+      alert(
+        err.response?.data ||
+        "Unable to start conversation. Please try again."
+      );
+    }
+  };
 
   useEffect(() => {
     const fetchItem = async () => {
@@ -145,7 +185,10 @@ function ItemDetails() {
             </div>
           )}
 
-          <button className="contact-button">
+          <button
+            className="contact-button"
+            onClick={handleContactUser}
+          >
             💬 Contact User
           </button>
 

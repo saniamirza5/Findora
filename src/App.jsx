@@ -14,10 +14,12 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ItemDetails from "./pages/ItemDetails";
+import EditItem from "./pages/EditItem";
 import ReportItem from "./pages/ReportItem";
 import MyItems from "./pages/MyItems";
 import Conversations from "./pages/Conversations";
 import Chat from "./pages/Chat";
+
 
 function AppLayout() {
   const location = useLocation();
@@ -39,6 +41,7 @@ function AppLayout() {
         {/* Main Application */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/items/:id" element={<ItemDetails />} />
+        <Route path="/items/:id/edit" element={<EditItem />} />
         <Route path="/report" element={<ReportItem />} />
         <Route path="/my-items" element={<MyItems />} />
 

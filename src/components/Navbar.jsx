@@ -1,21 +1,32 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./Navbar.css";
 
 function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const { isLoggedIn, logout, user } = useAuth();
 
   const isActive = (path) => {
     return location.pathname === path;
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
   return (
     <header className="navbar">
+
       <Link to="/" className="navbar-logo">
         <span>✦</span>
         Findora
       </Link>
 
       <nav className="navbar-links">
+
         <Link
           to="/dashboard"
           className={isActive("/dashboard") ? "active" : ""}
@@ -45,17 +56,42 @@ function Navbar() {
         >
           Messages
         </Link>
+
       </nav>
 
       <div className="navbar-actions">
-        <Link to="/login" className="navbar-login">
-          Log in
-        </Link>
 
-        <Link to="/register" className="navbar-signup">
-          Join Findora ✦
-        </Link>
+        {!isLoggedIn ? (
+          <>
+            <Link to="/login" className="navbar-login">
+              Log in
+            </Link>
+
+            <Link
+              to="/register"
+              className="navbar-signup"
+            >
+              Join Findora ✦
+            </Link>
+          </>
+        ) : (
+          <>
+            <span className="navbar-user">
+              Hi, {user?.name || "there"}!
+            </span>
+
+            <button
+              type="button"
+              className="navbar-logout"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
+          </>
+        )}
+
       </div>
+
     </header>
   );
 }
