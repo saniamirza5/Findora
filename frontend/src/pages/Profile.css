@@ -104,5 +104,38 @@
 }
 
 .profile-items-button:hover {
-  transform: translate(-1px, -1px);
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #2f2540;
+}
+/* LOGOUT */
+
+.profile-logout {
+  display: inline-block;
+
+  margin-top: 30px;
+  margin-left: 14px;
+
+  padding: 13px 20px;
+
+  background: #fffaf7;
+  color: #2f2540;
+
+  border: 2px solid #2f2540;
+  border-radius: 12px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow: 4px 4px 0 #2f2540;
+
+  transition: 0.15s ease;
+}
+
+.profile-logout:hover {
+  background: #f7d35d;
+  transform: translate(3px, 3px);
+  box-shadow: 1px 1px 0 #2f2540;
 }

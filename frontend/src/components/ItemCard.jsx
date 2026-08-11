@@ -39,13 +39,13 @@ function ItemCard({ item }) {
 
       <div className="item-card-content">
         <p className="item-card-location">
-          📍 {item.location}
+          📍 {item.location || "Location not provided"}
         </p>
 
         <h3>{item.itemName}</h3>
 
         <p className="item-card-description">
-          {item.description}
+          {item.description || "No description provided."}
         </p>
 
         <div className="item-card-footer">

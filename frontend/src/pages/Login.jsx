@@ -1,29 +1,38 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import "./Auth.css";
+
 
 function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     setError("");
     setLoading(true);
 
+
     try {
       await login(email, password);
+
 
       navigate("/");
     } catch (err) {
       console.error(err);
+
 
       if (err.response?.status === 401) {
         setError("Invalid email or password.");
@@ -35,13 +44,17 @@ function Login() {
     }
   };
 
+
   return (
     <div className="auth-page">
       <div className="auth-card">
 
+
         <h1>Welcome back ✦</h1>
 
+
         <p>Login to your Findora account</p>
+
 
         {error && (
           <div className="auth-error">
@@ -49,11 +62,17 @@ function Login() {
           </div>
         )}
 
+
         <form onSubmit={handleSubmit}>
 
-          <label>Email</label>
+
+          <label htmlFor="login-email">
+            Email
+          </label>
+
 
           <input
+            id="login-email"
             type="email"
             placeholder="Enter your email"
             value={email}
@@ -61,15 +80,21 @@ function Login() {
             required
           />
 
-          <label>Password</label>
+
+          <label htmlFor="login-password">
+            Password
+          </label>
+
 
           <input
+            id="login-password"
             type="password"
             placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
 
           <button
             type="submit"
@@ -78,7 +103,9 @@ function Login() {
             {loading ? "Logging in..." : "Login"}
           </button>
 
+
         </form>
+
 
         <p className="auth-switch">
           Don't have an account?{" "}
@@ -87,9 +114,11 @@ function Login() {
           </Link>
         </p>
 
+
       </div>
     </div>
   );
 }
+
 
 export default Login;

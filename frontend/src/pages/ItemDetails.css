@@ -6,7 +6,7 @@
   background: #fffaf7;
 }
 
-.back-link {
+.back-to-items {
   display: inline-block;
 
   margin-bottom: 30px;
@@ -16,10 +16,14 @@
 
   color: #51465f;
 
-  transition: transform 0.2s ease;
+  text-decoration: none;
+
+  transition: 0.15s ease;
 }
 
-.back-link:hover {
+.back-to-items:hover {
+  color: #b34d91;
+
   transform: translateX(-4px);
 }
 

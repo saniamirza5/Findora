@@ -33,8 +33,7 @@ function Dashboard() {
       activeFilter === "ALL" ||
       item.status === activeFilter;
 
-    const searchText = search.toLowerCase();
-
+    const searchText = search.trim().toLowerCase();
     const matchesSearch =
       item.itemName
         ?.toLowerCase()

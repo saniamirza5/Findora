@@ -1,9 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import "./Profile.css";
 
 function Profile() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/", { replace: true });
+
+    setTimeout(() => {
+      logout();
+    }, 0);
+  };
 
   return (
     <main className="profile-page">
@@ -63,6 +72,14 @@ function Profile() {
         >
           View My Items →
         </Link>
+
+        <button
+          type="button"
+          className="profile-logout"
+          onClick={handleLogout}
+        >
+          Log out
+        </button>
 
       </section>
 

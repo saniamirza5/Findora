@@ -15,7 +15,9 @@
   z-index: 100;
 }
 
-/* LOGO */
+/* =========================
+   LOGO
+========================= */
 
 .navbar-logo {
   display: flex;
@@ -30,6 +32,8 @@
   font-weight: 700;
 
   letter-spacing: -1px;
+
+  text-decoration: none;
 }
 
 .navbar-logo span {
@@ -40,7 +44,9 @@
   transform: rotate(10deg);
 }
 
-/* LINKS */
+/* =========================
+   LINKS
+========================= */
 
 .navbar-links {
   display: flex;
@@ -54,8 +60,10 @@
 
   color: #51465f;
 
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
+
+  text-decoration: none;
 
   transition: color 0.2s ease;
 }
@@ -84,7 +92,9 @@
   transform: rotate(-2deg);
 }
 
-/* ACTIONS */
+/* =========================
+   ACTIONS
+========================= */
 
 .navbar-actions {
   display: flex;
@@ -93,18 +103,28 @@
   gap: 12px;
 }
 
+/* =========================
+   LOG IN
+========================= */
+
 .navbar-login {
   padding: 9px 13px;
 
   color: #51465f;
 
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
+
+  text-decoration: none;
 }
 
 .navbar-login:hover {
   color: #b34d91;
 }
+
+/* =========================
+   SIGN UP
+========================= */
 
 .navbar-signup {
   padding: 10px 15px;
@@ -119,6 +139,8 @@
   font-size: 11px;
   font-weight: 800;
 
+  text-decoration: none;
+
   box-shadow: 3px 3px 0 #2f2540;
 
   transition: 0.15s ease;
@@ -130,7 +152,45 @@
   box-shadow: 1px 1px 0 #2f2540;
 }
 
-/* MOBILE */
+/* =========================
+   LOGGED-IN USER
+========================= */
+
+.navbar-user {
+  padding: 10px 15px;
+
+  background: #fffaf7;
+
+  color: #2f2540;
+
+  border: 2px solid #2f2540;
+  border-radius: 10px;
+
+  font-size: 13px;
+  font-weight: 800;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+
+  box-shadow: 3px 3px 0 #2f2540;
+
+  transition: 0.15s ease;
+}
+
+.navbar-user:hover {
+  background: #c9f58f;
+
+  color: #2f2540;
+
+  transform: translate(2px, 2px);
+
+  box-shadow: 1px 1px 0 #2f2540;
+}
+
+/* =========================
+   TABLET
+========================= */
 
 @media (max-width: 950px) {
   .navbar-links {
@@ -141,6 +201,10 @@
     display: none;
   }
 }
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 700px) {
   .navbar {
@@ -179,10 +243,22 @@
     margin-left: auto;
   }
 
+  .navbar-user {
+    max-width: 120px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+  }
+
   .navbar-login {
     padding: 8px;
   }
 }
+
+/* =========================
+   SMALL MOBILE
+========================= */
 
 @media (max-width: 450px) {
   .navbar-logo {
@@ -197,5 +273,10 @@
 
   .navbar-links a {
     font-size: 11px;
+  }
+
+  .navbar-user {
+    font-size: 12px;
+    padding: 8px 10px;
   }
 }

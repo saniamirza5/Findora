@@ -1,24 +1,25 @@
 .conversations-page {
   min-height: calc(100vh - 76px);
-
   background: #fffaf7;
 }
 
-/* HEADER */
+/* HERO */
 
-.conversations-header {
+.conversations-hero {
   padding: 65px 8% 80px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
+  gap: 40px;
+
   background: #f7d35d;
 
   position: relative;
 }
 
-.conversations-header::after {
+.conversations-hero::after {
   content: "";
 
   position: absolute;
@@ -40,7 +41,7 @@
   letter-spacing: 2px;
 }
 
-.conversations-header h1 {
+.conversations-hero h1 {
   margin-top: 12px;
 
   font-family: "Fredoka", sans-serif;
@@ -52,11 +53,11 @@
   letter-spacing: -3px;
 }
 
-.conversations-header h1 span {
+.conversations-hero h1 span {
   color: #c765a8;
 }
 
-.conversations-header > div > p:last-child {
+.conversations-hero > div > p:last-child {
   max-width: 520px;
 
   margin-top: 20px;
@@ -65,6 +66,8 @@
 
   line-height: 1.6;
 }
+
+/* MESSAGE DECORATION */
 
 .message-decoration {
   margin-right: 8%;
@@ -158,12 +161,15 @@
 
   box-shadow: 4px 4px 0 #2f2540;
 
+  text-decoration: none;
+
   transition: 0.2s ease;
 }
 
 .conversation-card:hover {
-  transform: translateX(5px);
-  box-shadow: 7px 4px 0 #2f2540;
+  transform: translate(3px, 3px);
+
+  box-shadow: 1px 1px 0 #2f2540;
 }
 
 /* AVATAR */
@@ -178,29 +184,21 @@
   align-items: center;
   justify-content: center;
 
+  background: #c9f58f;
+
   border: 2px solid #2f2540;
   border-radius: 50%;
 
   font-family: "Fredoka", sans-serif;
+
   font-size: 22px;
-}
-
-.conversation-avatar.pink {
-  background: #f5a9d8;
-}
-
-.conversation-avatar.yellow {
-  background: #f7d35d;
-}
-
-.conversation-avatar.green {
-  background: #c9f58f;
 }
 
 /* TEXT */
 
 .conversation-main {
   flex: 1;
+
   min-width: 0;
 }
 
@@ -214,11 +212,15 @@
 
 .conversation-name-row h3 {
   font-family: "Fredoka", sans-serif;
+
   font-size: 22px;
+
+  color: #2f2540;
 }
 
 .conversation-name-row span {
   color: #8b8191;
+
   font-size: 11px;
 }
 
@@ -228,6 +230,7 @@
   color: #b34d91;
 
   font-size: 11px;
+
   font-weight: 800;
 }
 
@@ -239,20 +242,29 @@
   font-size: 13px;
 
   white-space: nowrap;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
 }
 
 .conversation-arrow {
   font-size: 24px;
+
   font-weight: 700;
+
+  color: #2f2540;
 }
 
 /* RESPONSIVE */
 
 @media (max-width: 700px) {
-  .conversations-header {
+  .conversations-hero {
     padding: 50px 6% 70px;
+
+    flex-direction: column;
+
+    align-items: flex-start;
   }
 
   .message-decoration {
@@ -265,6 +277,7 @@
 
   .conversation-card {
     padding: 15px;
+
     gap: 12px;
   }
 

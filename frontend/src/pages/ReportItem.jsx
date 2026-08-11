@@ -4,7 +4,10 @@ import api from "../services/api";
 import "./ReportItem.css";
 
 function ReportItem() {
+  const navigate = useNavigate();
+
   const [type, setType] = useState("LOST");
+
   const [imagePreview, setImagePreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
 
@@ -15,6 +18,9 @@ function ReportItem() {
     date: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
+
+  // Handle text/date fields
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -24,21 +30,41 @@ function ReportItem() {
     }));
   };
 
+  // Handle image selection
   const handleImageChange = (e) => {
     const file = e.target.files[0];
 
-    if (!file) return;
+    if (!file) {
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file.");
+      return;
+    }
 
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
 
+  // Remove selected image
   const removeImage = () => {
     setImagePreview(null);
+    setImageFile(null);
   };
-  const navigate = useNavigate();
+
+  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Image is mandatory
+    if (!imageFile) {
+      alert("Please upload an image of the item.");
+      return;
+    }
+
+    setSubmitting(true);
 
     try {
       const data = new FormData();
@@ -48,10 +74,7 @@ function ReportItem() {
       data.append("location", formData.location);
       data.append("dateReported", formData.date);
       data.append("status", type);
-
-      if (imageFile) {
-        data.append("image", imageFile);
-      }
+      data.append("image", imageFile);
 
       console.log("Submitting item...");
 
@@ -62,22 +85,37 @@ function ReportItem() {
       alert("Item reported successfully! ✦");
 
       navigate("/dashboard");
-
     } catch (error) {
       console.error("Error reporting item:", error);
 
       if (error.response) {
-        console.error("Backend response:", error.response.data);
-        console.error("Status:", error.response.status);
+        console.error(
+          "Backend response:",
+          error.response.data
+        );
+
+        console.error(
+          "Status:",
+          error.response.status
+        );
       }
 
-      alert("Unable to report item. Please try again.");
+      alert(
+        error.response?.data ||
+          "Unable to report item. Please try again."
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <main className="report-page">
+
+      {/* HEADER */}
+
       <section className="report-header">
+
         <p className="report-kicker">
           CAMPUS LOST & FOUND ✦
         </p>
@@ -92,10 +130,18 @@ function ReportItem() {
           Whether you've lost something or found
           someone's belongings, you're in the right place.
         </p>
+
       </section>
 
+
+      {/* FORM CARD */}
+
       <section className="report-card">
+
+        {/* LOST / FOUND */}
+
         <div className="report-type">
+
           <button
             type="button"
             className={
@@ -106,11 +152,16 @@ function ReportItem() {
             onClick={() => setType("LOST")}
           >
             <span>😵</span>
+
             <div>
               <strong>I lost something</strong>
-              <small>Help me find it</small>
+
+              <small>
+                Help me find it
+              </small>
             </div>
           </button>
+
 
           <button
             type="button"
@@ -122,23 +173,43 @@ function ReportItem() {
             onClick={() => setType("FOUND")}
           >
             <span>🎉</span>
+
             <div>
               <strong>I found something</strong>
-              <small>Help me return it</small>
+
+              <small>
+                Help me return it
+              </small>
             </div>
           </button>
+
         </div>
+
+
+        {/* FORM */}
 
         <form
           className="report-form"
           onSubmit={handleSubmit}
         >
+
+          {/* SECTION 01 */}
+
           <div className="form-section-title">
+
             <span>01</span>
-            <h2>About the item</h2>
+
+            <h2>
+              About the item
+            </h2>
+
           </div>
 
+
+          {/* ITEM NAME */}
+
           <div className="report-field">
+
             <label htmlFor="itemName">
               Item name
             </label>
@@ -152,9 +223,14 @@ function ReportItem() {
               onChange={handleChange}
               required
             />
+
           </div>
 
+
+          {/* DESCRIPTION */}
+
           <div className="report-field">
+
             <label htmlFor="description">
               Description
             </label>
@@ -168,10 +244,16 @@ function ReportItem() {
               onChange={handleChange}
               required
             />
+
           </div>
 
+
+          {/* LOCATION + DATE */}
+
           <div className="report-row">
+
             <div className="report-field">
+
               <label htmlFor="location">
                 {type === "LOST"
                   ? "Where was it lost?"
@@ -186,9 +268,12 @@ function ReportItem() {
                 value={formData.location}
                 onChange={handleChange}
               />
+
             </div>
 
+
             <div className="report-field">
+
               <label htmlFor="date">
                 {type === "LOST"
                   ? "Date lost"
@@ -203,28 +288,46 @@ function ReportItem() {
                 onChange={handleChange}
                 required
               />
+
             </div>
+
           </div>
 
+
+          {/* SECTION 02 */}
+
           <div className="form-section-title upload-title">
+
             <span>02</span>
-            <h2>Add a photo</h2>
+
+            <h2>
+              Add a photo
+            </h2>
+
           </div>
+
 
           <p className="upload-description">
             A clear photo makes it much easier for
             someone to recognize an item.
           </p>
 
+
+          {/* IMAGE UPLOAD */}
+
           {!imagePreview ? (
+
             <label className="upload-box">
+
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
               />
 
-              <span className="upload-icon">＋</span>
+              <span className="upload-icon">
+                ＋
+              </span>
 
               <strong>
                 Choose an image
@@ -233,9 +336,13 @@ function ReportItem() {
               <small>
                 PNG, JPG or JPEG
               </small>
+
             </label>
+
           ) : (
+
             <div className="image-preview">
+
               <img
                 src={imagePreview}
                 alt="Selected item"
@@ -248,19 +355,30 @@ function ReportItem() {
               >
                 Remove image ×
               </button>
+
             </div>
+
           )}
+
+
+          {/* SUBMIT */}
 
           <button
             type="submit"
             className="submit-report"
+            disabled={submitting}
           >
-            {type === "LOST"
-              ? "Report Lost Item ✦"
-              : "Report Found Item ✦"}
+            {submitting
+              ? "Reporting..."
+              : type === "LOST"
+                ? "Report Lost Item ✦"
+                : "Report Found Item ✦"}
           </button>
+
         </form>
+
       </section>
+
     </main>
   );
 }

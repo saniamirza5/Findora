@@ -142,7 +142,7 @@ function MyItems() {
           </div>
         )}
 
-        {!loading && !error && myItems.length > 0 && (
+                {!loading && !error && myItems.length > 0 && (
           <div className="my-items-grid">
             {myItems.map((item) => (
               <div
@@ -155,7 +155,7 @@ function MyItems() {
 
                   <Link
                     to={`/items/${item.id}`}
-                    className="edit-item"
+                    className="view-item"
                   >
                     View
                   </Link>

@@ -1,0 +1,333 @@
+/* =========================
+   AUTH PAGE
+========================= */
+
+.auth-page {
+  min-height: 100vh;
+
+  padding: 70px 6%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #f5a9d8;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+/* Different background for Register can be added
+   through the page if needed later. */
+
+.auth-page::before {
+  content: "✦";
+
+  position: absolute;
+
+  top: 10%;
+  left: 10%;
+
+  font-family: "Fredoka", sans-serif;
+
+  font-size: 90px;
+
+  color: #eaa6d2;
+
+  transform: rotate(-15deg);
+}
+
+.auth-page::after {
+  content: "♡";
+
+  position: absolute;
+
+  right: 10%;
+  bottom: 10%;
+
+  font-family: "Fredoka", sans-serif;
+
+  font-size: 100px;
+
+  color: #8c70ad;
+
+  transform: rotate(12deg);
+}
+
+/* =========================
+   CARD
+========================= */
+
+.auth-card {
+  width: min(500px, 100%);
+
+  padding: 45px;
+
+  background: #fffaf7;
+
+  border: 3px solid #2f2540;
+
+  border-radius: 28px;
+
+  box-shadow: 10px 10px 0 #2f2540;
+
+  position: relative;
+
+  z-index: 2;
+}
+
+/* =========================
+   HEADING
+========================= */
+
+.auth-card h1 {
+  margin: 0;
+
+  font-family: "Fredoka", sans-serif;
+
+  font-size: clamp(45px, 7vw, 68px);
+
+  line-height: 0.92;
+
+  letter-spacing: -2px;
+
+  color: #2f2540;
+}
+
+.auth-card > p:not(.auth-switch) {
+  margin-top: 20px;
+
+  color: #51465f;
+
+  line-height: 1.6;
+
+  font-size: 15px;
+}
+
+/* =========================
+   ERROR
+========================= */
+
+.auth-error {
+  margin-top: 20px;
+
+  padding: 12px 14px;
+
+  background: #f8d7df;
+
+  border: 2px solid #2f2540;
+
+  border-radius: 10px;
+
+  color: #7c304c;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+/* =========================
+   SUCCESS
+========================= */
+
+.auth-success {
+  margin-top: 20px;
+
+  padding: 12px 14px;
+
+  background: #c9f58f;
+
+  border: 2px solid #2f2540;
+
+  border-radius: 10px;
+
+  color: #2f2540;
+
+  font-size: 13px;
+
+  font-weight: 700;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.auth-card form {
+  margin-top: 30px;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+/* =========================
+   LABELS
+========================= */
+
+.auth-card label {
+  margin-bottom: 8px;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  color: #2f2540;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+.auth-card input {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin-bottom: 18px;
+
+  padding: 14px 16px;
+
+  background: #ffffff;
+
+  border: 2px solid #2f2540;
+
+  border-radius: 12px;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  color: #2f2540;
+
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.auth-card input:focus {
+  box-shadow: 4px 4px 0 #e88fc9;
+
+  transform: translate(-1px, -1px);
+}
+
+.auth-card input::placeholder {
+  color: #9a91a0;
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+.auth-card button {
+  width: 100%;
+
+  margin-top: 5px;
+
+  padding: 15px;
+
+  background: #c9f58f;
+
+  color: #2f2540;
+
+  border: 2px solid #2f2540;
+
+  border-radius: 13px;
+
+  font-family: inherit;
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  box-shadow: 5px 5px 0 #2f2540;
+
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.auth-card button:hover:not(:disabled) {
+  transform: translate(3px, 3px);
+
+  box-shadow: 2px 2px 0 #2f2540;
+}
+
+.auth-card button:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+/* =========================
+   SWITCH LOGIN / REGISTER
+========================= */
+
+.auth-switch {
+  margin-top: 26px;
+
+  text-align: center;
+
+  font-size: 14px;
+
+  color: #51465f;
+}
+
+.auth-switch a {
+  color: #b34d91;
+
+  font-weight: 800;
+
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+  .auth-page {
+    min-height: calc(100vh - 70px);
+
+    padding: 40px 5%;
+  }
+
+  .auth-card {
+    padding: 32px 24px;
+
+    border-radius: 22px;
+
+    box-shadow: 7px 7px 0 #2f2540;
+  }
+
+  .auth-card h1 {
+    font-size: 48px;
+  }
+
+  .auth-card > p:not(.auth-switch) {
+    font-size: 14px;
+  }
+
+  .auth-page::before,
+  .auth-page::after {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .auth-card {
+    padding: 28px 20px;
+  }
+
+  .auth-card h1 {
+    font-size: 42px;
+  }
+}

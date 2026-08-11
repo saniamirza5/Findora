@@ -75,22 +75,12 @@ function Navbar() {
             </Link>
           </>
         ) : (
-          <>
-            <Link
-              to="/profile"
-              className="navbar-user"
-            >
-              Hi, {user?.name || "there"}!
-            </Link>
-
-            <button
-              type="button"
-              className="navbar-logout"
-              onClick={handleLogout}
-            >
-              Log out
-            </button>
-          </>
+          <Link
+            to="/profile"
+            className="navbar-user"
+          >
+            Hi, {user?.name || "there"}!
+          </Link>
         )}
 
       </div>
