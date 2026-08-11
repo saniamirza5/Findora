@@ -185,12 +185,14 @@ function ItemDetails() {
             </div>
           )}
 
-          <button
-            className="contact-button"
-            onClick={handleContactUser}
-          >
-            💬 Contact User
-          </button>
+          {item.user?.id !== user?.userId && (
+            <button
+              className="contact-button"
+              onClick={handleContactUser}
+            >
+              💬 Contact User
+            </button>
+          )}
 
         </div>
 
